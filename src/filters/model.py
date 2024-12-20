@@ -33,13 +33,13 @@ class Logger:
 			'value': value
 		})
 
-	def log_state(self, state):
+	def log_state(self, state, label):
 		for l, m in self.state_label_translations.items():
-			self.log_value(l, 'estimates', (m @ state)[0][0])
+			self.log_value(l, label, (m @ state)[0][0])
 
-	def log_covariance(self, covariance):
+	def log_covariance(self, covariance, label):
 		for l, m in self.state_label_translations.items():
-			self.log_value(l, 'variances', m @ covariance @ m.T)
+			self.log_value(l, label, m @ covariance @ m.T)
 			
 
 	def plot(self):
@@ -185,6 +185,6 @@ class KalmanFilter(Filter):
 		return self.state
 
 	def log(self):
-		self.logger.log_state(self.state)
-		self.logger.log_covariance(self.state_covariance)
+		self.logger.log_state(self.state, 'estimates')
+		self.logger.log_covariance(self.state_covariance, 'variances')
         
